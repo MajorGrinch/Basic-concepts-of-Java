@@ -130,7 +130,22 @@ You can simpy assign a value or a **method call** to any field in the class defi
 
 If the first statement of a constructor has the form `this(...)`, then the constructor calls another constructor of the same class.
 
-You can also initialize fields via `initialization block` which is not necessary and is not common.
+You can also initialize fields via `initialization block` which is not necessary and is not common. Initialization blocks are executed whenever an object of that class is constructed. It looks like:
+```java
+class Whatever{
+    private bla;
+    
+    //object initialization block
+    {
+        bla = 1;
+    }
+}
+```
+
+Three ways to initialize a field:
+1. setting it in a constructor
+2. explicit field initialization which is assigh a value or a method call to a field in the class definition
+3. initialization
 
 When a constructor is called:
 1. All data fields are initialized to their default values.
@@ -356,6 +371,15 @@ Local classes are never declared with an access specifier. Their scope is always
 
 If you want to make only a single object of a local inner class, you don't even need to give the class a name. This is called **anonymous inner class**.
 
-An anonymous inner class cannot have constructors.
+The syntax for anonymous is as follows:
+```java
+new superType(construction parameters)
+{
+    innerclass methods and data
+}
+```
+The `superType` above could be an interface. If so, the anonymous inner class implements that inteface. If it is a class, then the inner class extends it.
+
+An anonymous inner class cannot have constructors because the constructors must have the same name as the class, but the class has no name. But you can use the `initialization block` metioned above to initialize data and do something you want.
 
 If you want to customize your own return type for some methods of your class, you could use `static inner class`.
