@@ -79,7 +79,7 @@ Do not write accessor methods that return references to mutable objects. If need
 
 `final` instance field must be initialized when the object is constructed, after which the field can't be modified again.
 
-If you define a field as `static`, then there is only one such field per class which is shared among all instances of the class.
+If you define a field as `static`, then there is only one such field per class which is shared among all instances of the class. Static fields are called `class fields` in some object-orientend programming languages.
 
 use `static final` to declare static constant.
 
@@ -126,7 +126,7 @@ Fields and local variables are different. You must always explicitly initialize 
 
 A constructor with no arguments would create an object whose state is set to an appropriate default. If you write a class with no constructor, then a no-argument constructor is provided. If a class supplies at least one constructor but doesn't supply a no-argument constructor, it's illegal to construct objects without supplying arguments.
 
-You can simpy assign a value or a **method call** to any field in the class definition.
+You can simpy assign a value or a **method call** to any field in the class definition. It is particularly useful if all constructors of a class need to set a particular instance field to the same value.
 
 If the first statement of a constructor has the form `this(...)`, then the constructor calls another constructor of the same class.
 
