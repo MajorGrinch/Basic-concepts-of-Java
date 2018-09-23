@@ -411,6 +411,7 @@ To make life easier for implementors, the library supplied a class `AbstractColl
 |LinkedHashMap| A map that remembers the order where entries were added |
 |WeakHashMap | A map with values that can be reclaimed by the garbage collector if they are not used elsewhere|
 |IdentityHashMap | A map with keys that are compared by ==, not `equals` |
+
 ![collections_hierachy](collections_hierachy.png)
 
 ### LinkedList
