@@ -103,7 +103,6 @@ Every class can have a main method which is a handy trick for unit testing of cl
 
 **The Java programming language always uses call by value.** That means the method gets a copy of all parameter values.
 
-## call by value
 Java has two kinds of (explicit) method parameters:
 + primitive type
 + object reference
@@ -294,9 +293,7 @@ The ellipsis `...` is part of the Java code. It denotes that the method can rece
 6. Use polymorphism, not type information.
 7. Don't overuse reflection.
 
-Chapter 6
-
-## Interface
+## Chapter 6 Interface
 
 An interface is a set of requirement for the classes that want to conform to the interface.
 
@@ -385,13 +382,101 @@ An anonymous inner class cannot have constructors because the constructors must 
 If you want to customize your own return type for some methods of your class, you could use `static inner class`.
 
 ## Chapter 9
-## HashMap
+
+The "for each" loop works with any object that implements the `Iterable` inteface.
+
+As of Java SE 8, you can call the `forEachRemaining` method with a lambda expression that consumes an element.
+```java
+iterator.forEachRemaining(element -> do something with element)
+```
+The `remove` method of the `Iterator` interface removes the element that was returned by the last call to `next`. It is illegal to call `remove` if it wasn't preceded by a call to `next`.
+
+To make life easier for implementors, the library supplied a class `AbstractCollection` that leaves the fundamental method `size` and `iterator` abstract but implements the rountine methods in terms of them. Now, a concrete collection class can extend the `AbstractCollection` class.
+
+## Concrete Collections
+
+| Collection Type | Description |
+|-----------------|-------------|
+| ArrayList | An indexed sequence that grows and shrinks dynamically|
+| LinkedList | An ordered sequence that allows efficient insertion and removal at any location|
+| ArrayDeque | An double-ended queue that is implemented as a circular array|
+| HashSet | An unordered collection that rejects duplicates |
+| TreeSet | An sorted set|
+| EnumSet | A set of enumerated type values|
+|LinkedHashSet | A set that remembers the order where elements were inserted |
+|PriorityQueue | A collection that allows efficient removal of the smallest element |
+|HashMap | A data structure that stores key/value associations |
+|TreeMap | A map where keys are sorted |
+|EnumMap | A map where the keys belong to an enumerated type |
+|LinkedHashMap| A map that remembers the order where entries were added |
+|WeakHashMap | A map with values that can be reclaimed by the garbage collector if they are not used elsewhere|
+|IdentityHashMap | A map with keys that are compared by ==, not `equals` |
+![collections_hierachy](collections_hierachy.png)
+
+### LinkedList
+
+Rmovind an element from the middle of an array is expensive since all array elements beyond the removed one must be moved toward the beginning.
+
+In Java, all linked lists are actually doubly linked.
+
+Programmers don't usually use linked lists in situations where elements need to be accessed by an integer index but an `ArrayList`.
+
+### Hash Sets
+
+In Java, hash tables are implemented as arrays of linked lists where each list is called a bucket.
+
+The standard library uses bucket counts that are powers of 2, with a default of 16. Any value you supply for the table size is automatically rounded to the next power of 2.
+
+You would only use a `HashSet` if you don't care about the ordering of the elements in the collection.
+
+### Tree Sets
+
+A tree set is a sorted collection. The tree is a red-black tree.
+
+In order to use a tree set, you must be able to compare the elements. The elements must implement the `Comparable` interface, or you must supply a `Comparator` when constructing the set.
+
+If you don't need the data sorted, you don't need to use `TreeSet`.
+
+### Queues and Deques
+
+A double-ended queue, or deque, lets you efficiently add or remove elements at the head and tail.
+
+## Map
 
 You can use 
 ```java
 merge(key, 1, Integer::sum)
 ```
-to replace
+to **replace**
 ```java
 put(key, getOrDefault(key, 0) + 1)
 ```
+There re three views of a Map: the set of keys, the collection of values(which is not a set), and the set of k/v pairs. The methods are as follows:
+```java
+Set<K> keySet()
+Collection<V> values()
+Set<Map.Entry<K, V>> entrySet()
+```
+Nowadays, you can simply use the `forEach` method to visit all map entries:
+```java
+map.forEach((k, v) -> {
+    do something with k, v
+});
+```
+If you invoke the `remove` method of the iterator on the key set view, you actually remove the key and its associated value from the map.
+
+The `WeakHashMap` cooperates with the garbage collector to remove k/v paris when the only reference to the key is the one from the hash table entry.
+
+The `LinkdedHashSet` and `LinkdedhashMap` classes remember in which order you inserted items. Every time you call `get` or `put`, the affected entry is removed from its current position and placed at the end of the linked list of entries.
+
+The `IndetityHashMap` use `System.identityHashCode` method to compute hash values, which compute a hash value from the object's memory address. In other words, different key objects are considered distinct if they have equal contents.
+
+## Views and Wrappers
+
+The static `asList` method of the `Arrays` class returns a `List` wrapper around a plain Java array. The returned object is not an ArrayList. It's a view object with `get` and `set` methods that access the underlying array. All methods that would change the size of the array (such as add or remove) throw an UnsupportedOperationException.
+
+You can from subrange views for a number of collections. Any operations to the subrange would automatically reflect the entirelist.
+
+The `Collections` class has methods that produce *unmodifiable views* of collections. If an attempt to modify the collection is detected, an exception is thrown and the collection remains untouched.
+
+The unmodifiable views does not make the collection itself immutable.
