@@ -383,3 +383,15 @@ The `superType` above could be an interface. If so, the anonymous inner class im
 An anonymous inner class cannot have constructors because the constructors must have the same name as the class, but the class has no name. But you can use the `initialization block` metioned above to initialize data and do something you want.
 
 If you want to customize your own return type for some methods of your class, you could use `static inner class`.
+
+## Chapter 9
+## HashMap
+
+You can use 
+```java
+merge(key, 1, Integer::sum)
+```
+to replace
+```java
+put(key, getOrDefault(key, 0) + 1)
+```
